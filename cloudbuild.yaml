@@ -1,0 +1,16 @@
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+      - -c
+      - |
+        # echo 'user defined substitution candidate must start with underscore'
+        # echo 'example is : substitution vpc is '$_VPC_CONNECTOR_NAME
+        # echo 'default substitutions don't need initial underscore; example: '
+        # echo 'example is : the region associated with your build is '$LOCATION
+        sed -i "s|VAR_SERVICENAME1_MS|$_SERVICE_NAME1_MS|g" app.yaml
+        sed -i "s|VAR_PROJECT_ID|$PROJECT_ID|g" app.yaml
+        sed -i "s|VAR_REGION|$LOCATION|g" app.yaml
+        sed -i "s|VAR_VPC_CONNECTOR|$_VPC_CONNECTOR_NAME|g" app.yaml
+        gcloud app deploy
+timeout: "1600s"
