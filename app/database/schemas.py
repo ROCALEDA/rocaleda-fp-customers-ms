@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
 class CustomerBase(BaseModel):
-    id: int
-    userId: int
+    user_id: int
     name: str
