@@ -5,6 +5,7 @@ from google.oauth2.service_account import Credentials
 from google.pubsub_v1 import PullRequest
 from typing import Callable
 
+# opcional
 creds = Credentials.from_service_account_info(
     {
         "type": os.environ["GOOGLE_CLOUD_TYPE"],
@@ -22,7 +23,8 @@ creds = Credentials.from_service_account_info(
     }
 )
 
-create_customer_sub = pubsub_v1.SubscriberClient(credentials=creds)
+# create_customer_sub = pubsub_v1.SubscriberClient(credentials=creds)
+create_customer_sub = pubsub_v1.SubscriberClient()
 
 CUSTOMER_CREATION_SUBSCRIPTION_NAME = os.environ[
     "CUSTOMER_CREATION_SUBSCRIPTION_NAME"
