@@ -7,7 +7,7 @@ if TYPE_CHECKING:
 
 class CustomerService:
 
-    def __init__(self, customer_repository: CustomerRepository):
+    def __init__(self, customer_repository: "CustomerRepository"):
         self.customer_repository = customer_repository
     
     async def create_customer(self, new_customer: CustomerBase):
