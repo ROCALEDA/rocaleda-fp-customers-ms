@@ -1,9 +1,9 @@
-# from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from app.database.schemas import CustomerBase
 
-# if TYPE_CHECKING:
-from app.customer.repositories.customer_repository import CustomerRepository
+if TYPE_CHECKING:
+    from app.customer.repositories.customer_repository import CustomerRepository
 
 class CustomerService:
 
