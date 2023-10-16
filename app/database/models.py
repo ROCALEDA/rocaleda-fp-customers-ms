@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship
 
 from .database import Base
 
+
 class Customer(Base):
-    
     __tablename__ = "customer"
 
     user_id = Column(Integer, primary_key=True)
@@ -17,8 +17,8 @@ class Customer(Base):
     # children relationships
     projects = relationship("Project", back_populates="customer")
 
-class Project(Base):
 
+class Project(Base):
     __tablename__ = "project"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -29,12 +29,13 @@ class Project(Base):
     customer = relationship("Customer", back_populates="projects")
 
     # children relationships
-    performance_evaluations = relationship("PerformanceEvaluation",
-                                            back_populates="project")
+    performance_evaluations = relationship(
+        "PerformanceEvaluation", back_populates="project"
+    )
     open_positions = relationship("OpenPosition", back_populates="project")
 
-class PerformanceEvaluation(Base):
 
+class PerformanceEvaluation(Base):
     __tablename__ = "performance_evaluation"
 
     scheduled = Column(DateTime, primary_key=True)
@@ -47,8 +48,8 @@ class PerformanceEvaluation(Base):
     # parents relationships
     project = relationship("Project", back_populates="performance_evaluations")
 
-class OpenPosition(Base):
 
+class OpenPosition(Base):
     __tablename__ = "open_position"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -61,14 +62,15 @@ class OpenPosition(Base):
     project = relationship("Project", back_populates="open_positions")
 
     # children relationships
-    position_candidates = relationship("PositionCandidate",
-                                        back_populates="open_position")
+    position_candidates = relationship(
+        "PositionCandidate", back_populates="open_position"
+    )
     position_technologies = relationship(
         "Technology", secondary="position_details", back_populates="open_positions"
     )
 
-class PositionCandidate(Base):
 
+class PositionCandidate(Base):
     __tablename__ = "position_candidate"
 
     open_position_id = Column(Integer, ForeignKey("open_position.id"), primary_key=True)
@@ -80,8 +82,8 @@ class PositionCandidate(Base):
     # parents relationships
     open_position = relationship("OpenPosition", back_populates="position_candidates")
 
-class PositionDetail(Base):
 
+class PositionDetail(Base):
     __tablename__ = "position_details"
 
     open_position_id = Column(Integer, ForeignKey("open_position.id"), primary_key=True)
@@ -89,8 +91,8 @@ class PositionDetail(Base):
     # technology_years = Column(Integer(10))
     # seniority = Column(String(20))
 
-class Technology(Base):
 
+class Technology(Base):
     __tablename__ = "technology"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -98,6 +100,7 @@ class Technology(Base):
 
     # relationships
     open_positions = relationship(
-        "OpenPosition", secondary="position_details",
-        back_populates="position_technologies"
+        "OpenPosition",
+        secondary="position_details",
+        back_populates="position_technologies",
     )

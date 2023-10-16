@@ -22,7 +22,7 @@ async def on_startup() -> None:
         pull_messages(
             create_customer_sub,
             CUSTOMER_CREATION_SUB_PATH,
-            await create_customer_handler(instances.customer_service)
+            await create_customer_handler(instances.customer_service),
         )
     )
 
