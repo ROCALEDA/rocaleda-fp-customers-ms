@@ -1,8 +1,24 @@
 version: '3.8'
 
 services:
-  api-gateway:
+  customers-ms:
     build: .
     ports:
       - "8000:8000"
+    environment:
+      - DB_URL=postgresql://docker:docker@db:5432/customers
+    depends_on:
+      - db
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=customers
+    volumes:
+      - candidates_data:/var/lib/postgresql/data
 
+volumes:
+  candidates_data:
