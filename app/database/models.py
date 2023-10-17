@@ -22,7 +22,7 @@ class Project(Base):
     __tablename__ = "project"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    customer_id = Column(Integer, ForeignKey("customer.id"))
+    customer_id = Column(Integer, ForeignKey("customer.user_id"))
     name = Column(String(100))
 
     # parents relationships
