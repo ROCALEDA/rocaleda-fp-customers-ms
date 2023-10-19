@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 
-def initialize(customer_service: CustomerService):
+def initialize(customer_service: "CustomerService"):
     @router.post("/push")
     async def create_customer_from_push(data: PubSubMessage = Body(...)):
         message = data.message
