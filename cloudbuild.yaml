@@ -4,7 +4,6 @@ steps:
   args:
       - -c
       - |
-# sed -i "s|VAR_CUSTOMER_CREATION_SUBSCRIPTION_NAME|$_CUSTOMER_CREATION_SUBSCRIPTION_NAME|g" app.yaml
         sed -i "s|VAR_DB_URL|$_DB_URL|g" app.yaml
         sed -i "s|VAR_PROJECT_ID|$PROJECT_ID|g" app.yaml
         sed -i "s|VAR_REGION|$LOCATION|g" app.yaml
