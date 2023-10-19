@@ -27,4 +27,16 @@ class TestCustomerController:
 
         assert "success" in response
 
-        
+    @pytest.mark.asyncio
+    async def test_create_customer_from_push_to_raise_exc(self):
+        mock_service = Mock()
+        mock_service.create_customer = AsyncMock()
+
+        data_mock = Mock(message=None)
+
+        create_customer_func = customer_controller.initialize(mock_service)[
+            "create_customer_from_push"
+        ]
+
+        with pytest.raises(HTTPException):
+            await create_customer_func(data_mock)
