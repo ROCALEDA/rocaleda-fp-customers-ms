@@ -23,7 +23,7 @@ def initialize(customer_service: "CustomerService"):
         data_dict = json.loads(decoded_data)
         print("Received message from pubsub: ", data_dict)
 
-        customer = CustomerBase(**message)
+        customer = CustomerBase(**data_dict)
         await customer_service.create_customer(customer)
 
         return {"success": True}
