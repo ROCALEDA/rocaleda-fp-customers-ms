@@ -13,9 +13,9 @@ readiness_check:
     failure_threshold: 5
 
 env_variables:
-    CUSTOMER_CREATION_SUBSCRIPTION_NAME: VAR_CUSTOMER_CREATION_SUBSCRIPTION_NAME
+    # CUSTOMER_CREATION_SUBSCRIPTION_NAME: VAR_CUSTOMER_CREATION_SUBSCRIPTION_NAME
     DB_URL: VAR_DB_URL
 
 vpc_access_connector:
     name: projects/VAR_PROJECT_ID/locations/VAR_REGION/connectors/VAR_VPC_CONNECTOR
-    egress_setting: all-traffic
+
