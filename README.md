@@ -22,7 +22,7 @@ Para hacer uso de la alembic es necesario modificar la propiedad `sqlalchemy.url
 A continuación se listan los comandos para crear y ejecutar una nueva migración:
 
 1. Para crear una migración: `alembic revision -m "Set up Customer table"`
-2. Para ejecutar las migraciones pendientes: `alembic upgrade head`
+2. Para ejecutar las migraciones pendientes: `alembic upgrade head`, o `alembic upgrade <version_id>` para la migración deseada
 
 #### Ejecutando peticiones
 1. Las peticiones deben realizarse al host `http://localhost:8000`
