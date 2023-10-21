@@ -5,6 +5,7 @@ from fastapi import HTTPException
 from unittest.mock import Mock, AsyncMock
 
 from app.customer.controllers import customer_controller
+from app.database.schemas import ProjectCreate
 
 
 class TestCustomerController:
@@ -40,3 +41,36 @@ class TestCustomerController:
 
         with pytest.raises(HTTPException):
             await create_customer_func(data_mock)
+
+    @pytest.mark.asyncio
+    async def test_create_project(self):
+        mocked_service = Mock()
+        mocked_service.create_project = AsyncMock()
+
+        create_project_func = customer_controller.initialize(mocked_service)[
+            "create_customer?"
+        ]
+
+        project_data = {
+            "customer_id": 1,
+            "name": "Test Project",
+            "description": "Test Project description",
+            "profiles": [
+                {
+                    "name": "Profile 1",
+                    "tech_skills": ["Frontend"],
+                    "soft_skills": ["Leadership"],
+                    "amount": 1,
+                }
+            ],
+            "employees": [
+                {"full_name": "Employee 1", "profile_name": "Employee profile 1"}
+            ],
+            "state": {"role_id": 1, "email": "test@examplemail.com", "user_id": 1},
+        }
+
+        project = ProjectCreate(**project_data)
+
+        await create_project_func(project)
+        assert mocked_service.create_project.call_count == 1
+        mocked_service.create_project.assert_called_once_with(project)

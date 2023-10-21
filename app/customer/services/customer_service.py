@@ -20,7 +20,7 @@ class CustomerService:
     
     async def create_project(self, project_data: ProjectCreate)-> None:
         new_project = {
-            "customer_id" : project_data.customer_id,
+            "customer_id" : project_data.state.user_id,
             "name" : project_data.name,
             "description" : project_data.description
         }

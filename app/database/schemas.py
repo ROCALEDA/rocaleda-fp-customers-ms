@@ -2,6 +2,11 @@ from typing import Annotated, List
 
 from pydantic import BaseModel, Field
 
+# Elementos identidad cliente de API
+class StateBase(BaseModel):
+    role_id : str
+    email : str
+    user_id : str
 
 # Request Push de Pub/Sub
 class PubSubMessage(BaseModel):
@@ -16,7 +21,7 @@ class CustomerBase(BaseModel):
 
 # Elementos basicos nuevo proyecto
 class ProjectBase(BaseModel):
-    customer_id: int
+    state: StateBase
     name: str
     description: str
 
