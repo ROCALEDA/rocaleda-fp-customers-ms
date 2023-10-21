@@ -47,12 +47,13 @@ class TestCustomerController:
         mocked_service = Mock()
         mocked_service.create_project = AsyncMock()
 
+        customer_id = 1
+
         create_project_func = customer_controller.initialize(mocked_service)[
             "create_project"
         ]
 
         project_data = {
-            "customer_id": 1,
             "name": "Test Project",
             "description": "Test Project description",
             "profiles": [
@@ -71,6 +72,6 @@ class TestCustomerController:
 
         project = ProjectCreate(**project_data)
 
-        await create_project_func(project)
+        await create_project_func(customer_id, project)
         assert mocked_service.create_project.call_count == 1
-        mocked_service.create_project.assert_called_once_with(project)
+        mocked_service.create_project.assert_called_once_with(customer_id, project)
