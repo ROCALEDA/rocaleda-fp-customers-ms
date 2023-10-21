@@ -2,11 +2,6 @@ from typing import Annotated, List
 
 from pydantic import BaseModel, Field
 
-# Elementos identidad cliente de API
-class StateBase(BaseModel):
-    role_id : int
-    email : str
-    user_id : int
 
 # Request Push de Pub/Sub
 class PubSubMessage(BaseModel):
@@ -21,7 +16,6 @@ class CustomerBase(BaseModel):
 
 # Elementos basicos nuevo proyecto
 class ProjectBase(BaseModel):
-    state: StateBase
     name: str
     description: str
 
@@ -29,8 +23,8 @@ class ProjectBase(BaseModel):
 # Elementos perfil
 class ProfileBase(BaseModel):
     name: str
-    tech_skills: List[str]
     soft_skills: List[str]
+    tech_skills: List[str]
     amount: Annotated[int, Field(strict=True, gt=0, le=50)]
 
 
@@ -45,3 +39,10 @@ class EmployeeBase(BaseModel):
 class ProjectCreate(ProjectBase):
     profiles: List[ProfileBase]
     employees: List[EmployeeBase]
+
+
+# Response creación proyecto
+class ProjectResponse(BaseModel):
+    id: int
+    name: str
+    description: str
