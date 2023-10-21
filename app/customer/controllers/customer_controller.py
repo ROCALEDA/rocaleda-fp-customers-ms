@@ -1,9 +1,9 @@
 import base64
 import json
 from fastapi import APIRouter, Body, HTTPException
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from app.database.schemas import PubSubMessage, CustomerBase
+from app.database.schemas import PubSubMessage, CustomerBase, ProjectCreate
 
 if TYPE_CHECKING:
     from app.customer.services.customer_service import CustomerService
@@ -27,7 +27,12 @@ def initialize(customer_service: "CustomerService"):
         await customer_service.create_customer(customer)
 
         return {"success": True}
+    
+    @router.post("/project")
+    async def create_project(project: ProjectCreate) -> Any:
+        return await customer_service.create_project(project)
 
     return {
         "create_customer_from_push": create_customer_from_push,
+        "create_project": create_project
     }
