@@ -56,10 +56,17 @@ class TestCustomerService:
                     "tech_skills": ["Frontend"],
                     "soft_skills": ["Leadership"],
                     "amount": 1,
-                }
+                },
+                {
+                    "name": "Profile 2",
+                    "tech_skills": ["Backend"],
+                    "soft_skills": ["Responsibility"],
+                    "amount": 1,
+                },
             ],
             "employees": [
-                {"full_name": "Employee 1", "profile_name": "Employee profile 1"}
+                {"full_name": "Employee 1", "profile_name": "Employee profile 1"},
+                {"full_name": "Employee 2", "profile_name": "Employee profile 2"},
             ],
             "state": {"role_id": 1, "email": "test@examplemail.com", "user_id": 1},
         }
@@ -67,5 +74,12 @@ class TestCustomerService:
 
         await customer_service.create_project(project)
 
-        assert mocked_repository.create_open_position.call_count == 1
-        mocked_repository.create_open_position.assert_called_once_with(project_data)
+        mocked_repository.create_project.assert_called_once_with(
+            {
+                "customer_id": 1,
+                "name": "Test Project",
+                "description": "Test Project description",
+            }
+        )
+        assert mocked_repository.create_employee.call_count == 2
+        assert mocked_repository.create_open_position.call_count == 2
