@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock, AsyncMock
 
-from app.database.schemas import CustomerBase, ProjectCreate
+from app.database.schemas import CustomerBase, ProjectCreate, ProjectResponse
 from app.customer.services.customer_service import CustomerService
 
 
@@ -27,10 +27,16 @@ class TestCustomerService:
 
     @pytest.mark.asyncio
     async def test_create_project(self):
+        customer_id = 1
+
         mocked_repository = Mock()
 
         mocked_repository.create_project = AsyncMock()
-        mocked_repository.create_project.return_value = 1
+        mocked_repository.create_project.return_value = ProjectResponse(
+            id=1,
+            name="Proyecto Test",
+            description="Proyecto Test Description",
+        )
 
         mocked_repository.create_employee = AsyncMock()
 
@@ -47,7 +53,6 @@ class TestCustomerService:
         customer_service = CustomerService(mocked_repository)
 
         project_data = {
-            "customer_id": 1,
             "name": "Test Project",
             "description": "Test Project description",
             "profiles": [
@@ -72,11 +77,11 @@ class TestCustomerService:
         }
         project = ProjectCreate(**project_data)
 
-        await customer_service.create_project(project)
+        await customer_service.create_project(customer_id, project)
 
         mocked_repository.create_project.assert_called_once_with(
             {
-                "customer_id": 1,
+                "customer_id": customer_id,
                 "name": "Test Project",
                 "description": "Test Project description",
             }
