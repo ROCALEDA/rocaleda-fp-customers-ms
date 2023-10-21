@@ -4,9 +4,9 @@ from pydantic import BaseModel, Field
 
 # Elementos identidad cliente de API
 class StateBase(BaseModel):
-    role_id : str
+    role_id : int
     email : str
-    user_id : str
+    user_id : int
 
 # Request Push de Pub/Sub
 class PubSubMessage(BaseModel):
