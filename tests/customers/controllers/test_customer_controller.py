@@ -48,7 +48,7 @@ class TestCustomerController:
         mocked_service.create_project = AsyncMock()
 
         create_project_func = customer_controller.initialize(mocked_service)[
-            "create_customer?"
+            "create_project"
         ]
 
         project_data = {
