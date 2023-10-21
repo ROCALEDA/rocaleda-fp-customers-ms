@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from app.database.schemas import CustomerBase
+from app.database.schemas import CustomerBase, ProjectCreate
 
 if TYPE_CHECKING:
     from app.customer.repositories.customer_repository import CustomerRepository
@@ -17,3 +17,40 @@ class CustomerService:
         }
 
         await self.customer_repository.create_customer(new_customer_dict)
+    
+    async def create_project(self, project_data: ProjectCreate)-> None:
+        new_project = {
+            "customer_id" : project_data.state.user_id,
+            "name" : project_data.name,
+            "description" : project_data.description
+        }
+        project_id = await self.customer_repository.create_project(new_project)
+        for employee in project_data.employees:
+            new_employee = {
+                "project_id": project_id,
+                "full_name": employee.full_name,
+                "profile_name": employee.profile_name
+            }
+            await self.customer_repository.create_employee(new_employee)
+        for profile in project_data.profiles:
+            soft_skill_rows = [
+                await self.customer_repository.get_soft_skill_by_name(skill)
+                for skill in profile.soft_skills
+            ]
+            
+            tech_skills_rows = [
+                await self.customer_repository.get_tech_skill_by_name(skill)
+                for skill in profile.tech_skills
+            ]
+            
+            new_open_position = {
+                "project_id" : project_id,
+                "is_open" : True,
+                "position_name" : profile.name,
+                "soft_skills" : soft_skill_rows,
+                "technologies" : tech_skills_rows
+            }
+            
+            await self.customer_repository.create_open_position(new_open_position)
+        
+        
