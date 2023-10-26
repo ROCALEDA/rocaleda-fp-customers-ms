@@ -14,35 +14,47 @@ class CustomerBase(BaseModel):
     name: str
 
 
-# Elementos basicos nuevo proyecto
-class ProjectBase(BaseModel):
-    name: str
-    description: str
-
-
-# Elementos perfil
-class ProfileBase(BaseModel):
+class PositionBase(BaseModel):
     name: str
     soft_skills: List[str]
     tech_skills: List[str]
+
+
+# Elementos perfil
+class ProfileCreation(PositionBase):
     amount: Annotated[int, Field(strict=True, gt=0, le=50)]
 
 
 # Elementos funcionario
 class EmployeeBase(BaseModel):
-    # project_id : int
     full_name: str
     profile_name: str
 
 
 # Request nuevo proyecto
-class ProjectCreate(ProjectBase):
-    profiles: List[ProfileBase]
+class ProjectCreation(BaseModel):
+    name: str
+    description: str
+    profiles: List[ProfileCreation]
     employees: List[EmployeeBase]
 
 
 # Response creación proyecto
-class ProjectResponse(BaseModel):
+class ProjectCreationResponse(BaseModel):
     id: int
     name: str
     description: str
+
+
+class PositionDetailResponse(BaseModel):
+    id: int
+    is_open: bool
+    name: str
+
+
+class ProjectDetailResponse(BaseModel):
+    id: int
+    name: str
+    is_team_complete: bool
+    total_positions: int
+    open_positions: List[PositionDetailResponse]

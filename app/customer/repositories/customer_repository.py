@@ -35,3 +35,10 @@ class CustomerRepository:
     async def get_tech_skill_by_name(self, name: str) -> models.Technology:
         with database.create_session() as db:
             return db.query(models.Technology).filter_by(name=name).first()
+
+    async def get_projects(self, customer_id: int):
+        with database.create_session() as db:
+            projects = db.query(models.Project).filter_by(customer_id=customer_id).all()
+            for project in projects:
+                project.open_positions
+            return projects

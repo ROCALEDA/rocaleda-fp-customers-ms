@@ -25,6 +25,7 @@ class Project(Base):
     customer_id = Column(Integer, ForeignKey("customer.user_id"))
     name = Column(String(100))
     description = Column(String(255))
+    is_team_complete = Column(Boolean, default=False)
 
     # parents relationships
     customer = relationship("Customer", back_populates="projects")
@@ -68,7 +69,7 @@ class OpenPosition(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     project_id = Column(Integer, ForeignKey("project.id"))
-    is_open = Column(Boolean)
+    is_open = Column(Boolean, default=True)
     position_name = Column(String(80))
     # payrate = Column(Numeric(12, 2), nullable=True)
 

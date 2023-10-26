@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import Mock, AsyncMock
 
-from app.database.schemas import CustomerBase, ProjectCreate, ProjectResponse
+from app.database.schemas import CustomerBase, ProjectCreation, ProjectCreationResponse
 from app.customer.services.customer_service import CustomerService
 
 
@@ -32,7 +32,7 @@ class TestCustomerService:
         mocked_repository = Mock()
 
         mocked_repository.create_project = AsyncMock()
-        mocked_repository.create_project.return_value = ProjectResponse(
+        mocked_repository.create_project.return_value = ProjectCreationResponse(
             id=1,
             name="Proyecto Test",
             description="Proyecto Test Description",
@@ -75,7 +75,7 @@ class TestCustomerService:
             ],
             "state": {"role_id": 1, "email": "test@examplemail.com", "user_id": 1},
         }
-        project = ProjectCreate(**project_data)
+        project = ProjectCreation(**project_data)
 
         await customer_service.create_project(customer_id, project)
 

@@ -1,13 +1,14 @@
 import base64
 import json
 from fastapi import APIRouter, Body, HTTPException
-from typing import TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
 from app.database.schemas import (
     PubSubMessage,
     CustomerBase,
-    ProjectCreate,
-    ProjectResponse,
+    ProjectCreation,
+    ProjectCreationResponse,
+    ProjectDetailResponse,
 )
 
 if TYPE_CHECKING:
@@ -35,11 +36,16 @@ def initialize(customer_service: "CustomerService"):
 
     @router.post("/{customer_id}/project")
     async def create_project(
-        customer_id: int, project: ProjectCreate
-    ) -> ProjectResponse:
+        customer_id: int, project: ProjectCreation
+    ) -> ProjectCreationResponse:
         return await customer_service.create_project(customer_id, project)
+
+    @router.get("/{customer_id}/projects")
+    async def get_customer_projects(customer_id: int) -> List[ProjectDetailResponse]:
+        return await customer_service.get_customer_projects(customer_id)
 
     return {
         "create_customer_from_push": create_customer_from_push,
         "create_project": create_project,
+        "get_customer_projects": get_customer_projects,
     }

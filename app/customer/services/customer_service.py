@@ -1,6 +1,11 @@
-from typing import TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
-from app.database.schemas import CustomerBase, ProjectCreate, ProjectResponse
+from app.database.schemas import (
+    CustomerBase,
+    ProjectCreation,
+    ProjectCreationResponse,
+    ProjectDetailResponse,
+)
 
 if TYPE_CHECKING:
     from app.customer.repositories.customer_repository import CustomerRepository
@@ -15,7 +20,9 @@ class CustomerService:
 
         await self.customer_repository.create_customer(new_customer_dict)
 
-    async def create_project(self, customer_id: int, project_data: ProjectCreate):
+    async def create_project(
+        self, customer_id: int, project_data: ProjectCreation
+    ) -> ProjectCreationResponse:
         new_project = {
             "customer_id": customer_id,
             "name": project_data.name,
@@ -42,17 +49,45 @@ class CustomerService:
 
             new_open_position = {
                 "project_id": project_item.id,
-                "is_open": True,
+                # "is_open": True,
                 "position_name": profile.name,
                 "soft_skills": soft_skill_rows,
                 "technologies": tech_skills_rows,
             }
 
             await self.customer_repository.create_open_position(new_open_position)
-        return ProjectResponse.model_validate(
+        return ProjectCreationResponse.model_validate(
             {
                 "id": project_item.id,
                 "name": project_item.name,
                 "description": project_item.description,
             }
         )
+
+    async def get_customer_projects(
+        self, customer_id: int
+    ) -> List[ProjectDetailResponse]:
+        customer_projects = await self.customer_repository.get_projects(customer_id)
+        projects_output = []
+        for project in customer_projects:
+            open_positions = []
+            for open_position in project.open_positions:
+                open_positions.append(
+                    {
+                        "id": open_position.id,
+                        "is_open": open_position.is_open,
+                        "name": open_position.position_name,
+                    }
+                )
+
+            projects_output.append(
+                {
+                    "id": project.id,
+                    "name": project.name,
+                    "is_team_complete": project.is_team_complete,
+                    "total_positions": len(project.open_positions),
+                    "open_positions": open_positions,
+                }
+            )
+        print(projects_output)
+        return projects_output

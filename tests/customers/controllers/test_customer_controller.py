@@ -5,7 +5,7 @@ from fastapi import HTTPException
 from unittest.mock import Mock, AsyncMock
 
 from app.customer.controllers import customer_controller
-from app.database.schemas import ProjectCreate
+from app.database.schemas import ProjectCreation
 
 
 class TestCustomerController:
@@ -70,7 +70,7 @@ class TestCustomerController:
             "state": {"role_id": 1, "email": "test@examplemail.com", "user_id": 1},
         }
 
-        project = ProjectCreate(**project_data)
+        project = ProjectCreation(**project_data)
 
         await create_project_func(customer_id, project)
         assert mocked_service.create_project.call_count == 1
