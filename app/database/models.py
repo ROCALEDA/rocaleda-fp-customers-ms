@@ -71,6 +71,7 @@ class OpenPosition(Base):
     project_id = Column(Integer, ForeignKey("project.id"))
     is_open = Column(Boolean, default=True)
     position_name = Column(String(80))
+    candidate_id = Column(Integer, nullable=True)
     # payrate = Column(Numeric(12, 2), nullable=True)
 
     # parents relationships

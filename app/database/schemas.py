@@ -57,4 +57,4 @@ class ProjectDetailResponse(BaseModel):
     name: str
     is_team_complete: bool
     total_positions: int
-    open_positions: List[PositionDetailResponse]
+    positions: List[PositionDetailResponse]

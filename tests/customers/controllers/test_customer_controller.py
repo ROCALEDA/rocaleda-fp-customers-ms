@@ -75,3 +75,54 @@ class TestCustomerController:
         await create_project_func(customer_id, project)
         assert mocked_service.create_project.call_count == 1
         mocked_service.create_project.assert_called_once_with(customer_id, project)
+
+    @pytest.mark.asyncio
+    async def test_get_customer_projects(self):
+        mocked_service = Mock()
+        mocked_service.get_customer_projects = AsyncMock()
+
+        projects_data = [
+            {
+                "id": 1,
+                "name": "Test Project 1",
+                "is_team_complete": False,
+                "total_positions": 2,
+                "open_positions": [
+                    {
+                        "id": 1,
+                        "is_open": True,
+                        "name": "Test Position A",
+                    },
+                    {
+                        "id": 2,
+                        "is_open": True,
+                        "name": "Test Position B",
+                    },
+                ],
+            },
+            {
+                "id": 2,
+                "name": "Test Project 2",
+                "is_team_complete": True,
+                "total_positions": 1,
+                "open_positions": [
+                    {
+                        "id": 3,
+                        "is_open": True,
+                        "name": "Test Position C",
+                    }
+                ],
+            },
+        ]
+        mocked_service.get_customer_projects.return_value = projects_data
+
+        customer_id = 2
+
+        get_customer_projects_func = customer_controller.initialize(mocked_service)[
+            "get_customer_projects"
+        ]
+
+        func_response = await get_customer_projects_func(customer_id)
+
+        mocked_service.get_customer_projects.assert_called_once_with(customer_id)
+        assert func_response == projects_data

@@ -49,7 +49,6 @@ class CustomerService:
 
             new_open_position = {
                 "project_id": project_item.id,
-                # "is_open": True,
                 "position_name": profile.name,
                 "soft_skills": soft_skill_rows,
                 "technologies": tech_skills_rows,
@@ -68,26 +67,25 @@ class CustomerService:
         self, customer_id: int
     ) -> List[ProjectDetailResponse]:
         customer_projects = await self.customer_repository.get_projects(customer_id)
+        print(customer_projects)
         projects_output = []
         for project in customer_projects:
-            open_positions = []
+            positions = []
             for open_position in project.open_positions:
-                open_positions.append(
+                positions.append(
                     {
                         "id": open_position.id,
                         "is_open": open_position.is_open,
                         "name": open_position.position_name,
                     }
                 )
-
             projects_output.append(
                 {
                     "id": project.id,
                     "name": project.name,
                     "is_team_complete": project.is_team_complete,
                     "total_positions": len(project.open_positions),
-                    "open_positions": open_positions,
+                    "positions": positions,
                 }
             )
-        print(projects_output)
         return projects_output
