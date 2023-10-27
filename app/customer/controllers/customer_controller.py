@@ -34,7 +34,7 @@ def initialize(customer_service: "CustomerService"):
 
         return {"success": True}
 
-    @router.post("/{customer_id}/project")
+    @router.post("/{customer_id}/projects")
     async def create_project(
         customer_id: int, project: ProjectCreation
     ) -> ProjectCreationResponse:
