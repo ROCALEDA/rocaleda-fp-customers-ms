@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from app.customer.services.customer_service import CustomerService
 
 router = APIRouter(
-    prefix="/customer", tags=["customer"], responses={404: {"description": "Not found"}}
+    prefix="/customers", tags=["customer"], responses={404: {"description": "Not found"}}
 )
 
 
