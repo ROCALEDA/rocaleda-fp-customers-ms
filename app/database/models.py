@@ -1,4 +1,12 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, Numeric, String
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    SmallInteger,
+    String,
+)
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -33,23 +41,23 @@ class Project(Base):
     # children relationships
     open_positions = relationship("OpenPosition", back_populates="project")
     employees = relationship("Employee", back_populates="project")
-    # performance_evaluations = relationship(
-    #     "PerformanceEvaluation", back_populates="project"
-    # )
+    performance_evaluations = relationship(
+        "PerformanceEvaluation", back_populates="project"
+    )
 
 
-# class PerformanceEvaluation(Base):
-#    __tablename__ = "performance_evaluation"
+class PerformanceEvaluation(Base):
+    __tablename__ = "performance_evaluation"
 
-#    scheduled = Column(DateTime, primary_key=True)
-#    project_id = Column(Integer, ForeignKey("project.id"), primary_key=True)
-#    name = Column(String(80))
-#    candidate_id = Column(Integer)
-#    score = Column(Integer)
-#    observations = Column(String(255), nullable=True)
+    scheduled = Column(DateTime, primary_key=True)
+    project_id = Column(Integer, ForeignKey("project.id"), primary_key=True)
+    name = Column(String(80))
+    candidate_id = Column(Integer)
+    score = Column(Integer)
+    observations = Column(String(255), nullable=True)
 
-# parents relationships
-# project = relationship("Project", back_populates="performance_evaluations")
+    # parents relationships
+    project = relationship("Project", back_populates="performance_evaluations")
 
 
 class Employee(Base):
@@ -84,9 +92,9 @@ class OpenPosition(Base):
     technologies = relationship(
         "Technology", secondary="position_technology", back_populates="open_positions"
     )
-    # position_candidates = relationship(
-    #     "PositionCandidate", back_populates="open_position"
-    # )
+    position_candidates = relationship(
+        "PositionCandidate", back_populates="open_position"
+    )
 
 
 class PositionSoftSkill(Base):
@@ -131,14 +139,14 @@ class Technology(Base):
     )
 
 
-# class PositionCandidate(Base):
-#     __tablename__ = "position_candidate"
+class PositionCandidate(Base):
+    __tablename__ = "position_candidate"
 
-#    open_position_id = Column(Integer, ForeignKey("open_position.id"), primary_key=True)
-#    candidate_id = Column(Integer, primary_key=True)
-#    general_score = Column(Integer(3), nullable=True)
-#    technical_score = Column(Integer(3), nullable=True)
-#    softskill_score = Column(Integer(3), nullable=True)
+    open_position_id = Column(Integer, ForeignKey("open_position.id"), primary_key=True)
+    candidate_id = Column(Integer, primary_key=True)
+    general_score = Column(SmallInteger, nullable=True)
+    technical_score = Column(SmallInteger, nullable=True)
+    softskill_score = Column(SmallInteger, nullable=True)
 
-# parents relationships
-# open_position = relationship("OpenPosition", back_populates="position_candidates")
+    # parents relationships
+    open_position = relationship("OpenPosition", back_populates="position_candidates")

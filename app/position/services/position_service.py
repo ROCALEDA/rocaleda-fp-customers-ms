@@ -1,4 +1,6 @@
-from typing import TYPE_CHECKING
+from typing import List, TYPE_CHECKING
+
+from app.database.schemas import CandidateResponse
 
 if TYPE_CHECKING:
     from app.position.repositories.position_repository import PositionRepository
@@ -22,3 +24,22 @@ class PositionService:
                 }
             )
         return open_positions_with_details
+
+    async def get_position_candidates(
+        self, position_id: int
+    ) -> List[CandidateResponse]:
+        candidates = await self.position_repository.get_open_position_candidates(
+            position_id
+        )
+        candidates_output = []
+        for candidate in candidates:
+            candidates_output.append(
+                {
+                    "candidate_id": candidate.candidate_id,
+                    "technical_score": candidate.technical_score,
+                    "softskill_score": candidate.softskill_score,
+                    "general_score": candidate.general_score,
+                }
+            )
+
+        return candidates_output

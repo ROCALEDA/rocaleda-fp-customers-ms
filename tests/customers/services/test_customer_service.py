@@ -112,16 +112,13 @@ class TestCustomerService:
         )
         project_2.name = "Test Project 2"
 
-        base_projects = [project_1, project_2]
-
-        mocked_repository.get_projects.return_value = base_projects
+        mocked_repository.get_projects.return_value = [project_1, project_2]
 
         service = CustomerService(mocked_repository)
 
         customer_id = 2
 
         func_response = await service.get_customer_projects(customer_id)
-        print(func_response)
 
         assert len(func_response) == 2
         assert func_response[1]["name"] == "Test Project 2"
