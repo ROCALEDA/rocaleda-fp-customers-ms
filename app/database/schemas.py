@@ -1,5 +1,4 @@
-from typing import Annotated, List
-
+from typing import Annotated, List, Optional
 from pydantic import BaseModel, Field
 
 
@@ -58,3 +57,10 @@ class ProjectDetailResponse(BaseModel):
     is_team_complete: bool
     total_positions: int
     positions: List[PositionDetailResponse]
+
+
+class CandidateResponse(BaseModel):
+    candidate_id: int
+    technical_score: Optional[int]
+    softskill_score: Optional[int]
+    general_score: Optional[int]
