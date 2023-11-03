@@ -67,7 +67,6 @@ class CustomerService:
         self, customer_id: int
     ) -> List[ProjectDetailResponse]:
         customer_projects = await self.customer_repository.get_projects(customer_id)
-        print(customer_projects)
         projects_output = []
         for project in customer_projects:
             positions = []

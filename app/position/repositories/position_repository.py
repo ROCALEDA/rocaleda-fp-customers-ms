@@ -29,3 +29,13 @@ class PositionRepository:
             )
 
             return results
+
+    async def get_open_position_candidates(self, position_id):
+        with database.create_session() as db:
+            candidates = (
+                db.query(models.PositionCandidate)
+                .filter_by(open_position_id=position_id)
+                .all()
+            )
+
+            return candidates
