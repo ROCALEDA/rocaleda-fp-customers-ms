@@ -17,7 +17,6 @@ class PositionService:
 
     async def get_positions(self):
         results = await self.position_repository.get_open_positions_with_details()
-        print(results)
         open_positions_with_details = []
         for open_position, project, soft_skill_ids, technology_ids in results:
             open_positions_with_details.append(

@@ -10,20 +10,39 @@ class TestPositionService:
     async def test_position_service(self):
         mocked_repository = Mock()
         mocked_repository.get_open_positions_with_details = AsyncMock()
-        mocked_repository.get_open_positions_with_details.return_value = [
+
+        mock_item = (
             Mock(
-                open_position=Mock(id=1, position_name="Test position A", candidate_id=1, project_id=1, is_open=False),
-                project=Mock(customer_id=1, name="Project name", is_team_complete=False, id=1, description="A description"),
-                soft_skill_ids=[1, 2],
-                technology_ids=[3, 4],
-            )
-        ]
+                id=1,
+                position_name="Test position A",
+                candidate_id=1,
+                project_id=1,
+                is_open=False,
+            ),
+            Mock(
+                customer_id=1,
+                name="Project name",
+                is_team_complete=False,
+                id=1,
+                description="A description",
+            ),
+            [1, 2],
+            [3, 4],
+        )
+
+        mocked_repository.get_open_positions_with_details.return_value = [mock_item]
 
         service = PositionService(mocked_repository)
 
-        await service.get_positions()
+        result = await service.get_positions()
 
         assert mocked_repository.get_open_positions_with_details.call_count == 1
+        assert result[0]["open_position"].id == 1
+        assert result[0]["open_position"].position_name == "Test position A"
+        assert result[0]["project"].id == 1
+        assert not result[0]["project"].is_team_complete
+        assert result[0]["soft_skill_ids"][0] == 1
+        assert result[0]["technology_ids"][0] == 3
 
     @pytest.mark.asyncio
     async def test_get_position_candidates(self):
@@ -90,7 +109,7 @@ class TestPositionService:
 
         assert func_response.id == position_id
         assert func_response.project_id == project_id
-        assert func_response.is_open == False
+        assert not func_response.is_open
         assert func_response.candidate_id == candidate_id
 
     @pytest.mark.asyncio
