@@ -54,7 +54,8 @@ class CustomerService:
                 "technologies": tech_skills_rows,
             }
 
-            await self.customer_repository.create_open_position(new_open_position)
+            for _ in range(profile.amount):
+                await self.customer_repository.create_open_position(new_open_position)
         return ProjectCreationResponse.model_validate(
             {
                 "id": project_item.id,

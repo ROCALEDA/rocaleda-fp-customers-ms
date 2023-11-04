@@ -13,14 +13,14 @@ class CustomerBase(BaseModel):
     name: str
 
 
-class PositionBase(BaseModel):
+class PositionCreationBase(BaseModel):
     name: str
     soft_skills: List[str]
     tech_skills: List[str]
 
 
 # Elementos perfil
-class ProfileCreation(PositionBase):
+class ProfileCreation(PositionCreationBase):
     amount: Annotated[int, Field(strict=True, gt=0, le=50)]
 
 
@@ -64,3 +64,14 @@ class CandidateResponse(BaseModel):
     technical_score: Optional[int]
     softskill_score: Optional[int]
     general_score: Optional[int]
+
+
+class PositionUpdate(BaseModel):
+    candidate_id: int
+
+
+class PositionUpdateResponse(BaseModel):
+    id: int
+    project_id: int
+    is_open: bool
+    candidate_id: int
