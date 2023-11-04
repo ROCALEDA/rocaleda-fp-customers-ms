@@ -39,7 +39,7 @@ class TestPositionController:
         ]
         mocked_service.get_position_candidates.return_value = candidates_data
 
-        position_id = 2
+        position_id = 1
 
         get_position_candidates_func = position_controller.initialize(mocked_service)[
             "get_position_candidates"
@@ -49,3 +49,28 @@ class TestPositionController:
 
         mocked_service.get_position_candidates.assert_called_once_with(position_id)
         assert func_response == candidates_data
+
+    @pytest.mark.asyncio
+    async def test_update_position_chosen_candidate(self):
+        mocked_service = Mock()
+        mocked_service.update_position_chosen_candidate = AsyncMock()
+
+        position_id = 2
+
+        request_body = {"candidate_id": 3}
+
+        updated_position = {
+            "id": position_id,
+            "project_id": 1,
+            "is_open": False,
+            "candidate_id": 3,
+        }
+        mocked_service.update_position_chosen_candidate.return_value = updated_position
+
+        update_position_chosen_candidate_func = position_controller.initialize(
+            mocked_service
+        )["update_position_chosen_candidate"]
+
+        await update_position_chosen_candidate_func(position_id, request_body)
+
+        assert mocked_service.update_position_chosen_candidate.call_count == 1
