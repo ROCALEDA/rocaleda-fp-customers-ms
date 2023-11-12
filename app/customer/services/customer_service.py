@@ -2,6 +2,7 @@ from typing import List, TYPE_CHECKING
 
 from app.database.schemas import (
     CustomerBase,
+    CustomersResponse,
     ProjectCreation,
     ProjectCreationResponse,
     ProjectDetailResponse,
@@ -89,3 +90,12 @@ class CustomerService:
                 }
             )
         return projects_output
+
+    async def get_customers(
+        self, id_list: list, page: int, limit: int
+    ) -> CustomersResponse:
+        return await self.customer_repository.get_customers_filtered(
+            ids=id_list,
+            page=page,
+            per_page=limit,
+        )

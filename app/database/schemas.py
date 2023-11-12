@@ -83,3 +83,8 @@ class PerformanceEvaluationCreation(BaseModel):
     candidate_id: int
     score: int
     observations: str
+
+# Respuesta servicio consulta de detalle empresas cliente
+class CustomersResponse(BaseModel):
+    data: List[CustomerBase]
+    total_pages: int
