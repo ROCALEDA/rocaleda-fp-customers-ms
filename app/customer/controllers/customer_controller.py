@@ -6,6 +6,7 @@ from typing import List, TYPE_CHECKING
 from app.database.schemas import (
     PubSubMessage,
     CustomerBase,
+    CustomersResponse,
     ProjectCreation,
     ProjectCreationResponse,
     ProjectDetailResponse,
@@ -51,7 +52,7 @@ def initialize(customer_service: "CustomerService"):
         ids: str = Query(None),
         page: int = Query(1),
         limit: int = Query(None),
-    ):
+    ) -> CustomersResponse:
         id_list = ids.split(",") if ids else []
 
         return await customer_service.get_customers(
