@@ -1,8 +1,34 @@
+from datetime import datetime
 from app.database import models, database
 from sqlalchemy import func
 
+from app.database.schemas import PerformanceEvaluationCreation
+
 
 class PositionRepository:
+    async def get_closed_positions_by_project_id(self, project_id: int):
+        with database.create_session() as db:
+            return (
+                db.query(models.OpenPosition)
+                .filter(
+                    models.OpenPosition.project_id == project_id,
+                    models.OpenPosition.candidate_id.isnot(None),
+                )
+                .all()
+            )
+
+    async def create_performance_evaluation(
+        self, evaluation: PerformanceEvaluationCreation
+    ):
+        new_evaluation = evaluation.model_dump()
+        new_evaluation["scheduled"] = datetime.now()
+        db_evaluation = models.PerformanceEvaluation(**new_evaluation)
+        with database.create_session() as db:
+            db.add(db_evaluation)
+            db.commit()
+            db.refresh(db_evaluation)
+        return db_evaluation
+
     async def get_open_positions_with_details(self):
         with database.create_session() as db:
             results = (

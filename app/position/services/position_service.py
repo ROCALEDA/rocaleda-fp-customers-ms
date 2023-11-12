@@ -3,6 +3,7 @@ from typing import List, TYPE_CHECKING
 
 from app.database.schemas import (
     CandidateResponse,
+    PerformanceEvaluationCreation,
     PositionUpdate,
     PositionUpdateResponse,
 )
@@ -14,6 +15,14 @@ if TYPE_CHECKING:
 class PositionService:
     def __init__(self, position_repository: "PositionRepository") -> None:
         self.position_repository = position_repository
+
+    async def get_closed_positions_by_project_id(self, id: int):
+        return await self.position_repository.get_closed_positions_by_project_id(id)
+
+    async def create_position_evaluation(
+        self, evaluation: PerformanceEvaluationCreation
+    ):
+        return await self.position_repository.create_performance_evaluation(evaluation)
 
     async def get_positions(self):
         results = await self.position_repository.get_open_positions_with_details()
