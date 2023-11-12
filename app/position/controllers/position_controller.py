@@ -8,7 +8,7 @@ from app.database.schemas import (
     PositionUpdateResponse,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from app.position.services.position_service import PositionService
 
 router = APIRouter(

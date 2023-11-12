@@ -11,7 +11,7 @@ from app.database.schemas import (
     ProjectDetailResponse,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from app.customer.services.customer_service import CustomerService
 
 router = APIRouter(

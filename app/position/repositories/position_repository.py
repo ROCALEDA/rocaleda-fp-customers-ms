@@ -66,16 +66,6 @@ class PositionRepository:
 
             return candidates
 
-    # async def get_position_candidate(self, position_id, candidate_id):
-    #    with database.create_session() as db:
-    #        candidate = (
-    #            db.query(models.PositionCandidate)
-    #            .filter_by(open_position_id=position_id)
-    #            .filter_by(candidate_id=candidate_id)
-    #            .first()
-    #        )
-    #       return candidate
-
     async def update_open_position(self, position_id, candidate_id):
         with database.create_session() as db:
             open_position = (
