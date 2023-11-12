@@ -3,11 +3,12 @@ from fastapi import APIRouter
 
 from app.database.schemas import (
     CandidateResponse,
+    PerformanceEvaluationCreation,
     PositionUpdate,
     PositionUpdateResponse,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from app.position.services.position_service import PositionService
 
 router = APIRouter(
@@ -21,6 +22,14 @@ def initialize(position_service: "PositionService"):
     @router.get("")
     async def get_positions():
         return await position_service.get_positions()
+
+    @router.get("/closed/{project_id}")
+    async def get_closed_positions_by_project_id(project_id: int):
+        return await position_service.get_closed_positions_by_project_id(project_id)
+
+    @router.post("/evaluations")
+    async def create_position_evaluation(evaluation: PerformanceEvaluationCreation):
+        return await position_service.create_position_evaluation(evaluation)
 
     @router.get("/{position_id}/candidates")
     async def get_position_candidates(position_id: int) -> List[CandidateResponse]:
@@ -38,4 +47,6 @@ def initialize(position_service: "PositionService"):
         "get_positions": get_positions,
         "get_position_candidates": get_position_candidates,
         "update_position_chosen_candidate": update_position_chosen_candidate,
+        "get_closed_positions_by_project_id": get_closed_positions_by_project_id,
+        "create_position_evaluation": create_position_evaluation,
     }

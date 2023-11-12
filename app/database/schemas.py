@@ -75,3 +75,11 @@ class PositionUpdateResponse(BaseModel):
     project_id: int
     is_open: bool
     candidate_id: int
+
+
+class PerformanceEvaluationCreation(BaseModel):
+    project_id: int
+    name: str
+    candidate_id: int
+    score: int
+    observations: str

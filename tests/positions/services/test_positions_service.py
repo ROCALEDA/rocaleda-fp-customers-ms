@@ -175,3 +175,24 @@ class TestPositionService:
         await service.update_position_chosen_candidate(position_id, position_data)
 
         assert mocked_repository.update_position_chosen_candidate.call_count == 0
+
+    @pytest.mark.asyncio
+    async def test_get_closed_positions_by_project_id(self):
+        mocked_repository = Mock()
+        mocked_repository.get_closed_positions_by_project_id = AsyncMock()
+
+        service = PositionService(mocked_repository)
+
+        await service.get_closed_positions_by_project_id(1)
+        assert mocked_repository.get_closed_positions_by_project_id.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_create_position_evaluation(self):
+        mocked_repository = Mock()
+        mocked_repository.create_performance_evaluation = AsyncMock()
+
+        service = PositionService(mocked_repository)
+
+        await service.create_position_evaluation({})
+
+        assert mocked_repository.create_performance_evaluation.call_count == 1

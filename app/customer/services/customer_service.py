@@ -7,7 +7,7 @@ from app.database.schemas import (
     ProjectDetailResponse,
 )
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from app.customer.repositories.customer_repository import CustomerRepository
 
 

@@ -74,3 +74,29 @@ class TestPositionController:
         await update_position_chosen_candidate_func(position_id, request_body)
 
         assert mocked_service.update_position_chosen_candidate.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_get_closed_positions_by_project_id(self):
+        mocked_service = Mock()
+        mocked_service.get_closed_positions_by_project_id = AsyncMock()
+        mocked_service.get_closed_positions_by_project_id.return_value = []
+
+        get_closed_positions_by_project_id_func = position_controller.initialize(
+            mocked_service
+        )["get_closed_positions_by_project_id"]
+
+        await get_closed_positions_by_project_id_func(1)
+        assert mocked_service.get_closed_positions_by_project_id.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_create_position_evaluation(self):
+        mocked_service = Mock()
+        mocked_service.create_position_evaluation = AsyncMock()
+        mocked_service.create_position_evaluation.return_value = {}
+
+        create_position_evaluation_func = position_controller.initialize(
+            mocked_service
+        )["create_position_evaluation"]
+
+        await create_position_evaluation_func({})
+        assert mocked_service.create_position_evaluation.call_count == 1
