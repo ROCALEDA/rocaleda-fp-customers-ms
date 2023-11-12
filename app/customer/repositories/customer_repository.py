@@ -42,3 +42,19 @@ class CustomerRepository:
             for project in projects:
                 project.open_positions
             return projects
+
+    async def get_customers_filtered(self, ids: list, page: int, per_page: int):
+        with database.create_session() as db:
+            total_pages = 1
+            if ids is not None and len(ids) > 0:
+                query = db.query(models.Customer).filter(
+                    models.Customer.user_id.in_(ids)
+                )
+            else:
+                query = db.query(models.Customer)
+            if per_page is not None:
+                total_count = query.count()
+                total_pages = (total_count + per_page - 1) // per_page
+                offset = (page - 1) * per_page
+                query = query.offset(offset).limit(per_page)
+            return {"data": query.all(), "total_pages": total_pages}

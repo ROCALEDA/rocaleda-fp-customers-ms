@@ -128,3 +128,36 @@ class TestCustomerService:
         assert func_response[1]["positions"][1]["id"] == 2
         assert not func_response[1]["positions"][1]["is_open"]
         assert func_response[1]["positions"][1]["name"] == "Test position B"
+
+    @pytest.mark.asyncio
+    async def test_get_customers(self):
+        mocked_repository = Mock()
+        mocked_repository.get_customers_filtered = AsyncMock()
+
+        customer_1 = Mock(id=1)
+        customer_1.name = "Customer A"
+        customer_2 = Mock(id=2)
+        customer_2.name = "Customer B"
+        customer_details = {
+            "data": [customer_1, customer_2],
+            "total_pages": 1,
+        }
+
+        mocked_repository.get_customers_filtered.return_value = customer_details
+
+        service = CustomerService(mocked_repository)
+
+        id_list = [1, 2]
+        page = 1
+        limit = 100
+
+        func_response = await service.get_customers(id_list, page, limit)
+        print(func_response)
+
+        mocked_repository.get_customers_filtered.assert_called_once_with(
+            ids=id_list, page=page, per_page=limit
+        )
+
+        assert len(func_response["data"]) == 2
+        assert func_response["data"][0].id == 1
+        assert func_response["data"][0].name == "Customer A"
