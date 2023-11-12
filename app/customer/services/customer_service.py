@@ -89,3 +89,10 @@ class CustomerService:
                 }
             )
         return projects_output
+
+    async def get_customers(self, id_list: list, page: int, limit: int):
+        return await self.customer_repository.get_customers_filtered(
+            ids=id_list,
+            page=page,
+            per_page=limit,
+        )

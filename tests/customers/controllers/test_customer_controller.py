@@ -126,3 +126,38 @@ class TestCustomerController:
 
         mocked_service.get_customer_projects.assert_called_once_with(customer_id)
         assert func_response == projects_data
+
+    @pytest.mark.asyncio
+    async def test_get_customers(self):
+        mocked_service = Mock()
+        mocked_service.get_customers = AsyncMock()
+
+        customers_data = {
+            "data": [
+                {
+                    "user_id": 1,
+                    "name": "Customer A",
+                },
+                {
+                    "user_id": 2,
+                    "name": "Customer B",
+                },
+            ],
+            "total_pages": 1,
+        }
+        mocked_service.get_customers.return_value = customers_data
+
+        get_customers_func = customer_controller.initialize(mocked_service)[
+            "get_customers"
+        ]
+
+        ids = "1,2"
+        page = 1
+        limit = 100
+
+        func_response = await get_customers_func(ids, page, limit)
+
+        mocked_service.get_customers.assert_called_once_with(
+            id_list=['1','2'], page=page, limit=limit
+        )
+        assert func_response == customers_data
