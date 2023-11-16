@@ -6,6 +6,8 @@ from app.database.schemas import (
     PerformanceEvaluationCreation,
     PositionUpdate,
     PositionUpdateResponse,
+    TechnicalTestResponse,
+    TechnicalTestResults,
 )
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -90,5 +92,21 @@ class PositionService:
                 "project_id": updated_position.project_id,
                 "is_open": updated_position.is_open,
                 "candidate_id": updated_position.candidate_id,
+            }
+        )
+
+    async def save_technical_test_result(
+        self, position_id: int, test_results: TechnicalTestResults
+    ) -> TechnicalTestResponse:
+        saved_results = await self.position_repository.create_tecnical_test(
+            position_id, test_results
+        )
+        return TechnicalTestResponse.model_validate(
+            {
+                "scheduled": saved_results.scheduled,
+                "open_position_id": saved_results.open_position_id,
+                "candidate_id": saved_results.candidate_id,
+                "score": saved_results.score,
+                "observations": saved_results.observations,
             }
         )
