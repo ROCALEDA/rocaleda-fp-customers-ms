@@ -6,6 +6,8 @@ from app.database.schemas import (
     PerformanceEvaluationCreation,
     PositionUpdate,
     PositionUpdateResponse,
+    TechnicalTestResponse,
+    TechnicalTestResults,
 )
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -43,10 +45,19 @@ def initialize(position_service: "PositionService"):
             position_id, position
         )
 
+    @router.post("/{position_id}/tests")
+    async def save_technical_test_result(
+        position_id: int, test_results: TechnicalTestResults
+    ) -> TechnicalTestResponse:
+        return await position_service.save_technical_test_result(
+            position_id, test_results
+        )
+
     return {
         "get_positions": get_positions,
         "get_position_candidates": get_position_candidates,
         "update_position_chosen_candidate": update_position_chosen_candidate,
         "get_closed_positions_by_project_id": get_closed_positions_by_project_id,
         "create_position_evaluation": create_position_evaluation,
+        "save_technical_test_result": save_technical_test_result,
     }

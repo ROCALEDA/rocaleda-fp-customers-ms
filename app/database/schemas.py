@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Annotated, List, Optional
 from pydantic import BaseModel, Field
 
@@ -7,19 +8,20 @@ class PubSubMessage(BaseModel):
     message: dict
 
 
-# Request nueva empresa
+# Elemento base empresa
 class CustomerBase(BaseModel):
     user_id: int
     name: str
 
 
+# Elemento base posición
 class PositionCreationBase(BaseModel):
     name: str
     soft_skills: List[str]
     tech_skills: List[str]
 
 
-# Elementos perfil
+# Elemento base creación de posición
 class ProfileCreation(PositionCreationBase):
     amount: Annotated[int, Field(strict=True, gt=0, le=50)]
 
@@ -30,7 +32,7 @@ class EmployeeBase(BaseModel):
     profile_name: str
 
 
-# Request nuevo proyecto
+# Request creación de proyecto
 class ProjectCreation(BaseModel):
     name: str
     description: str
@@ -45,12 +47,14 @@ class ProjectCreationResponse(BaseModel):
     description: str
 
 
+# Elemento base posición en respuesta de proyecto
 class PositionDetailResponse(BaseModel):
     id: int
     is_open: bool
     name: str
 
 
+# Respuesta proyectos detallados de cliente empresa
 class ProjectDetailResponse(BaseModel):
     id: int
     name: str
@@ -59,6 +63,7 @@ class ProjectDetailResponse(BaseModel):
     positions: List[PositionDetailResponse]
 
 
+# Respuesta candidato a posición
 class CandidateResponse(BaseModel):
     candidate_id: int
     technical_score: Optional[int]
@@ -66,10 +71,12 @@ class CandidateResponse(BaseModel):
     general_score: Optional[int]
 
 
+# Request actualización detalle de posición
 class PositionUpdate(BaseModel):
     candidate_id: int
 
 
+# Respuesta actualización detalles de posición
 class PositionUpdateResponse(BaseModel):
     id: int
     project_id: int
@@ -77,6 +84,7 @@ class PositionUpdateResponse(BaseModel):
     candidate_id: int
 
 
+# Request guardado datos prueba de desempeño
 class PerformanceEvaluationCreation(BaseModel):
     project_id: int
     name: str
@@ -84,7 +92,25 @@ class PerformanceEvaluationCreation(BaseModel):
     score: int
     observations: str
 
-# Respuesta servicio consulta de detalle empresas cliente
+
+# Respuesta consulta de detalle empresas cliente
 class CustomersResponse(BaseModel):
     data: List[CustomerBase]
     total_pages: int
+
+
+# Request guardar resultado prueba técnica para admisión
+class TechnicalTestResults(BaseModel):
+    candidate_id: int
+    name: str
+    score: int
+    observations: str
+
+
+# Respuesta guardado resultado prueba técnica para admisión
+class TechnicalTestResponse(BaseModel):
+    scheduled: datetime
+    open_position_id: int
+    candidate_id: int
+    score: int
+    observations: str

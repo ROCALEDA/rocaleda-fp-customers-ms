@@ -196,3 +196,43 @@ class TestPositionService:
         await service.create_position_evaluation({})
 
         assert mocked_repository.create_performance_evaluation.call_count == 1
+
+    @pytest.mark.asyncio
+    async def test_save_technical_test_result(self):
+        mocked_repository = Mock()
+        mocked_repository.create_tecnical_test = AsyncMock()
+
+        position_id = 3
+        candidate_id = 4
+        score = 55
+        observations = "Ninguna"
+        test_schedule = "2099-01-01T09:00:00"
+
+        base_tech_test = Mock(
+            scheduled=test_schedule,
+            candidate_id=candidate_id,
+            open_position_id=position_id,
+            name="Prueba técnica A",
+            score=score,
+            observations=observations,
+        )
+
+        mocked_repository.create_tecnical_test.return_value = base_tech_test
+
+        service = PositionService(mocked_repository)
+
+        func_response = await service.save_technical_test_result(
+            position_id,
+            {
+                "candidate_id": candidate_id,
+                "name": "Prueba técnica A",
+                "score": 55,
+                "observations": observations,
+            },
+        )
+
+        assert func_response.scheduled.isoformat() == test_schedule
+        assert func_response.open_position_id == position_id
+        assert func_response.candidate_id == candidate_id
+        assert func_response.score == score
+        assert func_response.observations == observations
