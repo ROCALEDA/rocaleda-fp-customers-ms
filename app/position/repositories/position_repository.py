@@ -2,7 +2,7 @@ from datetime import datetime
 from app.database import models, database
 from sqlalchemy import func
 
-from app.database.schemas import PerformanceEvaluationCreation
+from app.database.schemas import PerformanceEvaluationCreation, TechnicalTestResults
 
 
 class PositionRepository:
@@ -89,3 +89,16 @@ class PositionRepository:
             project = db.query(models.Project).filter_by(id=project_id).first()
             project.is_team_complete = True
             db.commit()
+
+    async def create_tecnical_test(
+        self, position_id, new_technical_test: TechnicalTestResults
+    ):
+        dict_technical_test = new_technical_test.model_dump()
+        dict_technical_test["scheduled"] = datetime.now()
+        dict_technical_test["open_position_id"] = position_id
+        technical_test = models.TechnicalTest(**dict_technical_test)
+        with database.create_session() as db:
+            db.add(technical_test)
+            db.commit()
+            db.refresh(technical_test)
+        return technical_test

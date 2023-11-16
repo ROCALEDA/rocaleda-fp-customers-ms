@@ -3,6 +3,7 @@ from sqlalchemy import (
     Column,
     DateTime,
     ForeignKey,
+    ForeignKeyConstraint,
     Integer,
     SmallInteger,
     String,
@@ -111,6 +112,7 @@ class SoftSkill(Base):
     name = Column(String(50))
     description = Column(String(255))
 
+    # relationships
     open_positions = relationship(
         "OpenPosition", secondary="position_soft_skill", back_populates="soft_skills"
     )
@@ -150,3 +152,28 @@ class PositionCandidate(Base):
 
     # parents relationships
     open_position = relationship("OpenPosition", back_populates="position_candidates")
+
+    # children relationships
+    technical_tests = relationship("TechnicalTest", back_populates="position_candidate")
+
+
+class TechnicalTest(Base):
+    __tablename__ = "technical_test"
+
+    scheduled = Column(DateTime, primary_key=True)
+    candidate_id = Column(Integer, primary_key=True)
+    open_position_id = Column(Integer)
+    name = Column(String(90))
+    score = Column(Integer, nullable=True)
+    observations = Column(String(255), nullable=True)
+    __table_args__ = (
+        ForeignKeyConstraint(
+            ["candidate_id", "open_position_id"],
+            ["position_candidate.candidate_id", "position_candidate.open_position_id"],
+        ),
+    )
+
+    # parents relationships
+    position_candidate = relationship(
+        "PositionCandidate", back_populates="technical_tests"
+    )
