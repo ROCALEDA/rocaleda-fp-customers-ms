@@ -74,3 +74,20 @@ class CustomerRepository:
                 db.query(models.PerformanceEvaluation).filter_by(candidate_id=id).all()
             )
             return evaluations
+          
+    async def get_project_positions(self, id: int):
+        with database.create_session() as db:
+            return db.query(models.OpenPosition).filter_by(project_id=id).all()
+
+    async def get_technical_tests_by_position_ids(self, ids: list[int]):
+        with database.create_session() as db:
+            tests = (
+                db.query(models.TechnicalTest)
+                .filter(models.TechnicalTest.open_position_id.in_(ids))
+                .all()
+            )
+            return tests
+
+    async def get_technical_tests_by_candidate_id(self, id: int):
+        with database.create_session() as db:
+            return db.query(models.TechnicalTest).filter_by(candidate_id=id).all()

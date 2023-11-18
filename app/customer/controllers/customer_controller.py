@@ -71,6 +71,15 @@ def initialize(customer_service: "CustomerService"):
             candidate_id
         )
 
+    @router.get("/technical_tests/{customer_id}")
+    async def get_customer_technical_tests(customer_id: int):
+        return await customer_service.get_customer_technical_tests(customer_id)
+
+    @router.get("/candidates/technical_tests/{candidate_id}")
+    async def get_candidate_technical_tests(candidate_id: int):
+        return await customer_service.get_candidate_technical_tests(candidate_id)
+
+
     return {
         "create_customer_from_push": create_customer_from_push,
         "create_project": create_project,
@@ -78,4 +87,6 @@ def initialize(customer_service: "CustomerService"):
         "get_customers": get_customers,
         "get_customer_performance_evaluations": get_customer_performance_evaluations,
         "get_candidate_performance_evaluations": get_candidate_performance_evaluations,
+        "get_customer_technical_tests": get_customer_technical_tests,
+        "get_candidate_technical_tests": get_candidate_technical_tests,
     }
