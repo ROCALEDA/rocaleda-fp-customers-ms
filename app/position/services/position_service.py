@@ -110,3 +110,8 @@ class PositionService:
                 "observations": saved_results.observations,
             }
         )
+
+    async def create_candidate_in_position(self, position_id: int, candidate_id: int):
+        return await self.position_repository.create_candidate_in_position(
+            position_id, candidate_id
+        )

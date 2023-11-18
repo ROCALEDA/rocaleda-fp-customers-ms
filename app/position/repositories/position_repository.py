@@ -102,3 +102,17 @@ class PositionRepository:
             db.commit()
             db.refresh(technical_test)
         return technical_test
+
+    async def create_candidate_in_position(self, position_id: int, candidate_id: int):
+        with database.create_session() as db:
+            new_position_candidate = models.PositionCandidate(
+                open_position_id=position_id,
+                candidate_id=candidate_id,
+                general_score=None,
+                technical_score=None,
+                softskill_score=None,
+            )
+            db.add(new_position_candidate)
+            db.commit()
+
+            return new_position_candidate
