@@ -99,3 +99,21 @@ class CustomerService:
             page=page,
             per_page=limit,
         )
+
+    async def get_customer_performance_evaluations(self, customer_id: int):
+        customer_projects = await self.customer_repository.get_projects(customer_id)
+
+        project_ids = [project.id for project in customer_projects]
+
+        return (
+            await self.customer_repository.get_performance_evaluations_by_project_ids(
+                project_ids
+            )
+        )
+
+    async def get_candidate_performance_evaluations(self, id: int):
+        return (
+            await self.customer_repository.get_performance_evaluations_by_candidate_id(
+                id
+            )
+        )
