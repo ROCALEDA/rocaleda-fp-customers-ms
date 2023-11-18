@@ -58,3 +58,19 @@ class CustomerRepository:
                 offset = (page - 1) * per_page
                 query = query.offset(offset).limit(per_page)
             return {"data": query.all(), "total_pages": total_pages}
+
+    async def get_performance_evaluations_by_project_ids(self, ids: list[int]):
+        with database.create_session() as db:
+            evaluations = (
+                db.query(models.PerformanceEvaluation)
+                .filter(models.PerformanceEvaluation.project_id.in_(ids))
+                .all()
+            )
+            return evaluations
+
+    async def get_performance_evaluations_by_candidate_id(self, id: int):
+        with database.create_session() as db:
+            evaluations = (
+                db.query(models.PerformanceEvaluation).filter_by(candidate_id=id).all()
+            )
+            return evaluations
