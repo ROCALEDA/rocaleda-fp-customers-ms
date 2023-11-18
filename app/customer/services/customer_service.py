@@ -117,3 +117,19 @@ class CustomerService:
                 id
             )
         )
+
+    async def get_customer_technical_tests(self, customer_id: int):
+        customer_projects = await self.customer_repository.get_projects(customer_id)
+        project_ids = [project.id for project in customer_projects]
+        position_ids = []
+
+        for id in project_ids:
+            positions = await self.customer_repository.get_project_positions(id)
+            position_ids.append([position.id for position in positions])
+
+        return await self.customer_repository.get_technical_tests_by_position_ids(
+            position_ids
+        )
+
+    async def get_candidate_technical_tests(self, id: int):
+        return await self.customer_repository.get_technical_tests_by_candidate_id(id)
