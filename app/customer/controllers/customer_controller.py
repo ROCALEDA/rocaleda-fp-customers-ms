@@ -61,9 +61,21 @@ def initialize(customer_service: "CustomerService"):
             limit=limit,
         )
 
+    @router.get("/performance_evaluations/{customer_id}")
+    async def get_customer_performance_evaluations(customer_id: int):
+        return await customer_service.get_customer_performance_evaluations(customer_id)
+
+    @router.get("/candidates/performance_evaluations/{candidate_id}")
+    async def get_candidate_performance_evaluations(candidate_id: int):
+        return await customer_service.get_candidate_performance_evaluations(
+            candidate_id
+        )
+
     return {
         "create_customer_from_push": create_customer_from_push,
         "create_project": create_project,
         "get_customer_projects": get_customer_projects,
         "get_customers": get_customers,
+        "get_customer_performance_evaluations": get_customer_performance_evaluations,
+        "get_candidate_performance_evaluations": get_candidate_performance_evaluations,
     }
