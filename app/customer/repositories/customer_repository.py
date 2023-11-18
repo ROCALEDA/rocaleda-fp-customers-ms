@@ -74,7 +74,7 @@ class CustomerRepository:
                 db.query(models.PerformanceEvaluation).filter_by(candidate_id=id).all()
             )
             return evaluations
-
+          
     async def get_project_positions(self, id: int):
         with database.create_session() as db:
             return db.query(models.OpenPosition).filter_by(project_id=id).all()
