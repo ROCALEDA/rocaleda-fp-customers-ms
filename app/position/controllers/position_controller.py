@@ -53,6 +53,12 @@ def initialize(position_service: "PositionService"):
             position_id, test_results
         )
 
+    @router.post("/{position_id}/candidates/{candidate_id}")
+    async def create_candidate_in_position(position_id: int, candidate_id: int):
+        return await position_service.create_candidate_in_position(
+            position_id, candidate_id
+        )
+
     return {
         "get_positions": get_positions,
         "get_position_candidates": get_position_candidates,
@@ -60,4 +66,5 @@ def initialize(position_service: "PositionService"):
         "get_closed_positions_by_project_id": get_closed_positions_by_project_id,
         "create_position_evaluation": create_position_evaluation,
         "save_technical_test_result": save_technical_test_result,
+        "create_candidate_in_position": create_candidate_in_position,
     }
