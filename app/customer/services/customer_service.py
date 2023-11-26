@@ -125,7 +125,8 @@ class CustomerService:
 
         for id in project_ids:
             positions = await self.customer_repository.get_project_positions(id)
-            position_ids.append([position.id for position in positions])
+            for position in positions:
+                position_ids.append(position.id)
 
         return await self.customer_repository.get_technical_tests_by_position_ids(
             position_ids
