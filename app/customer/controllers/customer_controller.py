@@ -79,7 +79,6 @@ def initialize(customer_service: "CustomerService"):
     async def get_candidate_technical_tests(candidate_id: int):
         return await customer_service.get_candidate_technical_tests(candidate_id)
 
-
     return {
         "create_customer_from_push": create_customer_from_push,
         "create_project": create_project,
